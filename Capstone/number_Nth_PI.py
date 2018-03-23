@@ -25,7 +25,7 @@ def NthPI():
     else:
       break
     
-  decimal.prec = digits  
+  decimal.getcontext().prec= digits  
   pi=D(0)
   counter=0
   while counter<=digits:
