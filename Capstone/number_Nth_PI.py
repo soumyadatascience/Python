@@ -17,7 +17,7 @@ def NthPI():
     D = decimal.Decimal
     while True:
         try:
-            digits = int(input('Enter number of digits for PI approximation: max-1000- '))
+            digits = int(input('Enter number of digits for PI approximation(max-1000): '))
         except:
             print("Looks like you did not enter an integer , Try Agin!")
             continue
