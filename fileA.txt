@@ -37,3 +37,13 @@ $ git commit -m "initial commit" # once commited the copy remains to staging & l
 $ git log
 $ git log --oneline # condence logs
 $ git log --oneline -2 # recent logs
+6.when you have a empty local repo ( Local to push remote)
+$ git clone https://github.com/soumyadatascience/DataScience.git
+add files
+$git add fileA.txt
+$git add fileB.txt
+$git commit -m "inital commit"
+$git push -u origin master
+7.when you have a empty remote repo ( Local to push remote)
+$ git remote add origin  https://github.com/soumyadatascience/DataScience.git
+$git push -u origin master
