@@ -20,3 +20,11 @@ $ git log --oneline --graph
 * 387fd08 Add files via upload
 A Merger occurs when a commit has more than 1 parent 
 A BRANCG occurs when a commit has more than 1 child
+2. GIT uses objects to store types of thing
+A COMMIT - simple text file that contains information such as the commit user information, 
+commit message, a reference to the commits parent or parents and a reference to the root tree of the project. 
+That information is all that Git needs to rebuild the full contents of a commit. 
+ANNOTATED TAG
+TREE
+BLOB
+$git has-object fileA.txt
