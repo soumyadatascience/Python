@@ -1,0 +1,22 @@
+1.Graph model - Defines relationship among the commit to a repos
+DAG - Directed cyclic graph . It has NODE and Edges
+--> arrow direction depends on how you define a relationship
+ACYCLIC - con cycles or non-circular
+$ git log --oneline --graph
+* be0d9f8 (HEAD -> master, origin/master, origin/HEAD) Update ShapeReshape.py
+* f75c441 Create floor-ceil-and-rint.py
+* 38c0f8f Create np-array-mathematics.py
+* b55faaa Create eye_and_identity.py
+* f80d350 Create np-zeros-and-ones.py
+* d957321 Create concate.py
+* 47edd1c Create ShapeReshape.py
+* 7ab2393 Create reverse_array.py
+* 05c97f1 Create Transpose_flatten.py
+*   e026fe4 Merge pull request #1 from soumyadatascience/soumyadatascience-patch-1
+|\
+| * 26cba53 (origin/soumyadatascience-patch-1) Add files via upload
+|/
+* 9805a1e Add files via upload
+* 387fd08 Add files via upload
+A Merger occurs when a commit has more than 1 parent 
+A BRANCG occurs when a commit has more than 1 child
