@@ -1,7 +1,15 @@
-1.Graph model - Defines relationship among the commit to a repos
-DAG - Directed cyclic graph . It has NODE and Edges
---> arrow direction depends on how you define a relationship
-ACYCLIC - con cycles or non-circular
+1.Graph model 
+- Defines relationship among the commit to a repos
+- represent anything connected
+- consists of edges & nodes
+*DAG - Directed cyclic graph . It has NODE and Edges
+--> arrow direction depends on how you define a relationship.not circular
+*ACYCLIC - con cycles or non-circular
+*GITS DAG
+- Each node is a commit 
+- --> indicated a commits parents
+- A branch occurs when a node has more than 1 child
+- A merge occurs when a node has more than 1 parrent
 $ git log --oneline --graph
 * be0d9f8 (HEAD -> master, origin/master, origin/HEAD) Update ShapeReshape.py
 * f75c441 Create floor-ceil-and-rint.py
@@ -18,13 +26,174 @@ $ git log --oneline --graph
 |/
 * 9805a1e Add files via upload
 * 387fd08 Add files via upload
-A Merger occurs when a commit has more than 1 parent 
-A BRANCG occurs when a commit has more than 1 child
 2. GIT uses objects to store types of thing
-A COMMIT - simple text file that contains information such as the commit user information, 
+*COMMIT OBJECT 
+- simple text file that contains information such as the commit user information, 
 commit message, a reference to the commits parent or parents and a reference to the root tree of the project. 
 That information is all that Git needs to rebuild the full contents of a commit. 
-ANNOTATED TAG
-TREE
-BLOB
-$git has-object fileA.txt
+*ANNOTATED TAG
+- a reference to a specefic con
+*TREE
+- Directories & Filenames
+*BLOB
+- Content of a File
+GIT ID = name of the GITOBJECT
+       = 40- charecter hex number
+	   =SHA-1 value
+	   = unique for a Given peice of commit
+	   = design to avalange - means small change can cause a large change in SHA-1 value
+$git hash-object fileA.txt
+$echo "added a line" >> fileA.txt
+$git hash-object fileA.txt
+$git log --oneline ( 7 charectar Short ID)
+$git log            ( 40 charectar SHA-1)
+$git show <GITID/SHORTID>  {shows content of the commit object}
+3.Git References
+*References = A reference is a user-friendly name that points to either a commit's SHA-1 value or to another reference. 
+          If a reference points to another reference, it's called a symbolic reference. Here, the latest commit has two references associated with it,
+		  HEAD and master.
+*Branch labels  = Reference point to tip of the branch
+*HEAD = points to the current commits branch label / 1 head per repository
+*tags = reference attached to a specific commit. It acts as a user-friendly label for the commit. These are different from branch labels, 
+        which move along with each new commit. Tags are used to mark important commits, like version 1.0
+*Master - Default name of the main branch
+        - Branch = A branch is an independent path for a set of commits
+CLI commands 
+Scenario 1 { (A)<--(B)<--(C)<---[MASTER]<---[HEAD]}
+$cd .git
+$ls
+$cd refs
+$ls
+heads tags
+$cd heads
+$ls
+master
+$cat master (SHA-1 of the tio of the branch)
+$git log --oneline 1
+483d057(HEAD->master) added feature 2
+$cd .git
+$ls
+$Cat HEAD
+4.Refering to Prior commits
+* ~ or ~1 = parent
+* ~~ or ~2 = parents parent
+$git log -online --graph
+*e0cb6cb
+*1e16oac
+*e8d41c0
+*14b97e6
+$git show HEAD {points to e0cb6cb }
+$git show HEAD~ {points to 1e16oac }
+$git show master~3 {points to 14b97e6 }
+$git show e0cb6cb~3 {points to 14b97e6 }
+5.Refering to parents in a merge (^paentnum)
+* ^ or ^1 = 1st parent of a merge
+* ^2 = 2nd parent of a merge
+* ^^ = 1st parents (1st parent)
+$git log -online --graph
+*e0cb6cb
+*1e16oac
+*e8d41c0
+*14b97e6
+$git show master^ {points to 1e16oac}
+$git show HEAD^2 {Error as we have only 1 parent }
+$git show HEAD^^ {points to e8d41c0}
+* Tilda and caret characters can be combined arbitrarily to access any commit. 
+Even in a tree with many branches and merges. For example $git HEAD~^ 2 refers to the parents second parent
+6.Tags
+- A tag is a reference attached to a specific commit. It acts as a user-friendly label for the commit.
+(a) Lightweight - ref to commit
+(b)Annotated - A full git object that reference a commit
+$git tag {lists all the tags}
+v1.0
+v0.1
+*To see details of a commit via tags
+$git show v1.0
+*To Tag a Commit
+$git tag v1.0 (defaults to head) or to specefy the commit $git tag v0.1 HEAD^
+*To Tag a commit with annotated tag
+$git tag -a -m "include feature 2" V2.0
+$git show V2.0
+* To push to remote repositary
+$git push origin --tags or $git push origin <tagname>
+7.Branches
+- A set of commits that tace back to the the projects first commit
+- By default = master branch
+* benefits
+- Fast & easy
+- Enables experimentation
+- Enable team developement
+* Types of branch -  Topic & Long lived
+- Topic = short lived branch 
+- Long lived = master , a release , developement
+$git branch [to see all the branches]
+featurex
+*master
+#create a branch
+$git branch featurex
+8.CHECKOUT
+- updates the HEAD reference
+- swithces to current commit
+- updates the working tree
+$git branch 
+featurex
+*master
+$git checkout featurex
+$git branch
+*featurex <---- now head points here, any commits will now be the part of featurex branch
+master
+9.COMBINE Branch creating & checkout
+$git checkout -b featurex
+10.DETACHED HEAD
+- if you check out to a SHA-1 instead of a branch
+11.fixing a detached head
+- create a branch on the commit and checkout the branch
+12.Deleting branch
+$git branch -d featurex
+force delete $git branch -D featurex
+13.Undo an accidental delete 
+$git branch -D featurex
+$git reflog
+$git checkout -b featurex <SHORTID> 
+14.MERGING
+- Merging combines the work of independent branches. Usually, this involves merging a topic branch, 
+such as the featureX branch, into what is called a base branch, such as the master branch. 
+The base branch is usually a longer running branch than the topic branch
+There are four main types of merges
+**fast-forward merge
+**merge commit
+**squash merge
+**rebase
+15.fast-forward merge
+-A fast-forward merge moves the base branch label to the tip of the topic branch.
+- a fast-forward merge simply involves moving the master label from commit A to commit C
+- A fast forward merge is possible only if no other commits have been made to the base branch since 
+the topic branch was created
+- If any commits have been added to the base branch, it will not allow you to perform a fast-forward merge.
+In this example, a fast-forward merge is not possible because commit D was created after the featureX branch was created. 
+If git had allowed a fast-forward merge, the master branch label would move to commit C, and the work of commit D would be bypassed. 
+Whoever did the work of commit D would not be very happy with that, 
+so the merge is not fast-forwardable.
+Steps:-
+1.$git checkout master
+2.$git merge featureX
+3.$git log --online --graph
+4.$git branch -d featureX
+16.Merge commit
+- A merge commit combines the work of the tips of the feature and base branches and places the result into a single merge
+ commit
+- Combining the work of multiple commits may result in whats called a merge conflict, 
+if both branches change the same thing in different ways. We will discuss merge conflicts later, 
+and for now, we will assume that the merge will be successful
+Steps:-
+1.$git checkout master
+2.$git merge --no-ff feature2
+3.$git log --online --graph
+4.$git branch -d featureX
+17. TEAM COMMIT HISTORY POLICIES
+- Requires a linier history
+- require merge commit
+- Let the merging person decide
+- In addition to merging topic branches into long-running branches, some teams periodically merge 
+long-running branches into other long-running branches. These merges are usually easy, 
+because they are fast-forwardable, even if a merge commit is used.
