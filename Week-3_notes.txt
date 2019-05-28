@@ -1,0 +1,210 @@
+1.Resolving merge conflicts
+- However, there are cases where multiple branches make different changes to the same part of a file. 
+- In that case, a merge conflict occurs and a person needs to make a decision on how to resolve it.
+- There is no merge conflict when changes are made to separate files
+- Git also can automatically merge changes to different parts of the same file. In Git, a part of a file is called a hunk
+- merge conflict occurs when two branch change same hunk of same file.
+2.AVOIDING CONFLICTS
+- Small,frquent merges
+- Its better to create many small merge problems than one giant merge problem
+- If your project is a software project, decoupled modular code is much less likely to have merged conflicts. 
+- In some ways, the number and complexity of merge conflicts is a test of how modular your code is.
+3.Resolving CONFLICTS
+- Involves 3 commits
+(a) Tip of the current branch - ours or mine
+(b) Tip of the Branch to be merged - thiers
+(c) a common ancestor - "merge base"
+I.Checkout master
+II.Merge FeatureX
+	a.conflict @ filea.txt
+III.Fix filea.txt
+IV.Stage filea,txt
+V.commit the merge commit
+VI.Delete featureX branch
+Note - When attempting a merge, files with conflict are modified by GIT & placed in working tree.
+$git checkout master
+$git --onleline --graph -all
+$git merge featureX
+CONFLICT
+$git status
+$cat fileA.txt ( Text from HEAD commit between <<< and ===== , Text from branch to be merged are from ==== and >>>)
+$git add fileA.txt
+$git commit
+$git --onleline --graph -all
+$git branch -d featureX
+4.Tracking Branches
+- local branch that represent remote branch
+- If you clone a repository, youll have a default local tracking branch.
+- When we clone the remote repository, the same three commits, master branch label and head reference
+ will be copied to the local repository
+- A tracking branch is related to its associated remote branch and local branch, but they are decoupled
+- tracking branches are only updated with network commands like clone, fetch, pull and push.
+ * Name - <remote>/<branch>
+$git branch -all
+$git log origin/master --oneline
+$git log origin --oneline
+5.Changing Remote/Origin/HEAD
+$git branch -all
+*develop
+master
+remotes/origin/HEAD->orgin/master
+remotes/origin/develop
+remotes/origin/master
+$git remote set-head origin develop
+$git branch -all
+*develop
+master
+remotes/origin/HEAD->orgin/develop
+remotes/origin/develop
+remotes/origin/master
+6.changing the tracking branch status
+- git status includs tracking branch status
+$git status {you can see if the tracking branch is ahead of orgini/master}
+use $git log all {combined log of all local and tracking branches}
+7.Fetch, Pull and Push
+*Clone -  copies remote reporsitory
+*fetch - retrives new objects and references from remote reporsitory
+*pull - Fetches and merges commits loacally
+*Push - addes new objects and references to the remote reporsitory
+*fetch 
+$git log origin/master --oneline --graph -all
+$git fetch
+$git log origin/master --oneline --graph -all (Fetch initialy update the tracking branch)
+$git status ( Show if the master branch is behinf the tracking branch)
+$git log origin/master --oneline --graph -all
+*pull
+$git pull ( ff merge hapens default) / can mention --on-ff , --ff-only ,--rebase
+- id conflict occurs it aborts the merge & stashing the file occurs for later use.
+*Push
+$git push -u origin master 
+general rule - Fetch & pull before push 
+if we commited a local change & alos sombody else commited a remore change , and we do a Push the Push will
+fail - we need to do a fetch or pull before pushing 
+7.Rebasing
+- rewrite history
+- do with caution
+- General rule : - dont overwrite history that is shared
+*Type of rebasing 
+- regular & interactive
+- Rebase moves the commits of feature branch to a new parent
+
+Master - (A)<--(D) 
+FeatureX - (A)<--(B)<--(C)
+In this case the work of the featureX branch can be re-applied to the tip of the master branch(D)
+Master - (A)<--(D)<--(B')<--(C')
+Notice the SHA-1 values changes
+* How rebasing works internaly 
+- while rebasing the diffs between the commits are used and applied to the new parent - this is called reapplying commits
+8. Rebasing is a Merge
+- its a form of merge
+- so it can create conflicts
+pros
+- can incorporate changes from parent branch
+- make the code more current
+- make the eventual merge into master more smother and a ff merge- avoide merge conflict and a cleaner merge history.
+Cons
+- merge conflicts
+- can cause issues if the commits have been shared
+- not preserving history
+$git checkout featureX
+$git rebase master 
+        or
+$git rebase master featureX
+9. Rebasing with conflict
+$git checkout featureX
+$git rebase master 
+conflict
+- a. both modified fileA.txt
+fix fileA.txt
+$git add fileA.txt
+$git rebase --continue
+     or
+$git rebase --abort	 
+10. Rewrite - history
+Amending a commit
+- change the commit msg
+- change the project file
+- create a new GIT ID or SHA-1 as we are changing the history
+Lets look at the setps - rewrite  commit msg 
+$touch filec.txt
+$git add filec.txt
+$git commit -m "ad filec.txt"
+$git log --onleline 1
+*43f30b5 (head-->master) ad filec.txt
+as we now need to correct the type in the commit msg
+$git commit --ammend -m "add filec.txt"
+$git log --onleline 1
+*d70eb1f (head-->master) ad filec.txt {SHA-1 changed}
+Lets look at the setps - rewrite  file
+- you can modify the stagging area
+- ammend a commit
+- use "no-edit" to use the same commit comment
+$git log --onleline 1
+*43f30b5 (head-->master) ad filec.txt
+$echo "new line" >>filec.txt
+$git add filec.txt
+$git commit --ammend --no-edit "add filec.txt"
+11. Interactive Rebase
+- lets you edit commits using commands
+	a.the commit can belong to any branch
+	b.once this is done the commit history is changed , so do not perform this on shared commits
+command - $git rebase -i <parent commit ID>
+What can we do ?
+=================
+- pick - use a commit as is
+- reword - edit the commit message
+- edit - stop and edit the commit
+- drop - delete the commit
+- Squash - combine 2 commits 
+- fix - combine 2 commits  with out the commit comments
+- Reorder commits  ( file is read top tp bottom )
+- exec -  execute sheet commands
+Note - Remove 1 line the commit will be deleted , remove everything the rebase will abort
+Steps - update file & msg 
+#Look at the logs
+$git log --oneline --graph
+*commit id 3
+*commit id 2 ( assume this has errors in file name and msg )
+*commit id 1
+$git rebase -i commit id 1
+edit commit id 2
+pick commit 3
+save & exit......stops on commit 2
+$ls
+fileA.txt fileBB.txt
+#rename the file
+$mv fileBB.txt fileB.txt
+$git status
+	- interactive rebase in progress
+$git add .
+$git commit --amend -m "add fileB.txt"
+$git rebase --continue
+Steps - delete
+$git log --oneline --graph
+*commit id 3
+*commit id 2 ( assume this has errors in file name and msg )
+*commit id 1
+$git rebase -i commit id 1
+drop commit id 2
+pick commit 1
+save & exit......
+Steps - Sqush
+$git log --oneline --graph
+*commit id 3
+*commit id 2 ( assume this has errors in file name and msg )
+*commit id 1
+$git rebase -i commit id 1
+pick commit id 2
+squash commit 3
+save & exit......
+what is squash ?
+============
+- merges the tip of feature branch onto tip of the base branch
+- places the result in stagging area
+- result commit to a new commit
+Performing a squash merge
+========================
+1.$ git checkout master
+2.$git merge -squash featureX
+3.$git commit
+4.$git branch -d featureX
