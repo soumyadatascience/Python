@@ -1,0 +1,5 @@
+Download the package 
+unzip it if it is zipped 
+cd into the directory containing setup.py 
+If there are any installation instructions contained in documentation contianed herein, read and follow the instructions OTHERWISE 
+type in python setup.py install 
