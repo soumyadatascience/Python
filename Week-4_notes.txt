@@ -1,0 +1,116 @@
+1.Pull Request
+- Pull requests are a feature of Git hosting sites such as BitBucket and GitHub. 
+- The ultimate goal of a pull request is to merge a branch into the project.
+- Pull requests enable 
+	- team communication related to the work of the branch. 
+	- Notifications related to the pull request can be sent to team members. 
+	- Those team members can provide feedback or comments and ultimately can have a say in approving the content.
+      This can act as a form of code review.
+2.TWO repository configuration
+	- Single repository (merge a branch to the repository)
+	- multi - repository (merge a branch from fork repository=> into upstream repository)
+	- fork approach is common when the submitted doesnot have access to upstream repository
+3.When you create a pull request?
+- when a branch is created ( begin discussion on the work of the branch)
+- when you want a comments on the branch ( when you need help)
+- when branch is ready to review /merge
+4.Performing a Pull request ( Single repository)
+- create a feature branch in local repo
+- commit work to the repor
+- push the featurex branch to remote
+- open bitbucket create a pull request
+- pull request gets visble in overview tab 
+- Now you can do 3 things 
+	- approve ( may require certain number of approval before merge can occur)
+	- decline ( will remove the pull request )
+	- edit (You do not need to do this if you add a commit to the branch, the pull request will automatically be updated)
+	- Merge - if selected need to select a Merge strategy 
+Note -  You can create a merge commit or you can squash. A squash will reduce the entire branch to one linear commit, 
+you dont have to use one of these strategies to perform the merge. You can use your local client to merge the branch 
+just as usual. When you push the merge to the remote repository, the pull request will be closed.
+**CLI Steps
+$git checkout -b "featurex"
+$touch fileA.txt
+$git add fileA.txt
+$git commit -m "added featurex"
+$git push --set-upstream origin featurex
+follow the above bitbuckt setps to pull request , after the merge do the next step
+In the command line, execute a pull to add the new merge commit to your local
+repository
+$git push -d origin featurex
+5.Forking overview
+- Forking generally means copying a remote repository to your own online account.
+- Both are remote repository
+- Upstream - source of truth
+6.why forking is used
+- It can be used to experiment with or learn from the upstream repository
+- you have a separate remote repository that can be synchronized with the upstream repository as 
+	the upstream repository changes.
+- A fork can also be used to create branches and issue pull requests to the upstream repository
+- A fork can also be used to create a different source of truth. In other words, it can be used 
+	to start a new line of development of the project that remains independent from the upstream repository. 
+	You could use the upstream project as a starting point for a different type project or you could create a source
+	of truth that competes with the upstream project. This may or may not be a desirable thing to do. It maybe better to
+	just help improve the upstream project
+7.Create a fork
+- in BitBucket Navigate to the repo want to forking
+- Click on +
+- Click on Fork this Repo 
+- Name the Fork 
+- Click on Fork this repository
+8.Syncronizing fork
+- Inbitbuket overview check on msg
+- click on sync now
+- Synchronizing using Bitbucket creates a merge commit on the forked repository. 
+You can see that when we sync the repository, Bitbucket displays a default commit message. 
+This is for the merge commit. This merge commit is not in the upstream repository. 
+So even though the project files are synchronized, the commit histories of the two repositories differ. 
+This behavior may be fine, depending on how you are using the fork. If you would like more control over the commit histories, 
+you can manually sync the repositories using your local Git client
+- After sinking the fork, you can view the merge commit in Bitbucket. In your local client, youll need to do a pull to 
+ see the merge commit and have the latest project files 
+9.Performing a Pull request ( multi- repository)
+- create a fork from the upstream repo
+- create a feature branch in fork local
+- commit work to the repor
+- push the featurex branch to remote
+- open bitbucket create a pull request
+- pull request gets visble in overview tab 
+- Now you can do 3 things 
+	- approve ( may require certain number of approval before merge can occur)
+	- decline ( will remove the pull request )
+	- edit (You do not need to do this if you add a commit to the branch, the pull request will automatically be updated)
+	- Merge - if selected need to select a Merge strategy
+1. Using the command line, clone projectjfork to create a local repository for the forked
+repository.
+2. Create a branch named feature1 off of the master branch. This will be the branch that
+is part of the pull request.
+3. Create a commit on the feature1 branch containing a file named fileA.txt with the
+line "feature 1" as the content of the file.
+4. Push the feature1 branch to the remote projectjfork repository
+5. In Bitbucket, navigate to the projectjfork repository. Click on Commit and Branches to
+verify that your feature1 branch and commit are on the remote repository.
+6. Click on Pull Requests . Click on the create a pull request link.
+7. On the Create a pull request page, modify the information if you would like and select
+Create pull request . You should see that your pull request was created.
+. In Bitbucket, navigate to projectj . This is the upstream repository. Click on Pull
+requests . You should see the pull request from your fork.
+8. Click on the link to view the pull request.
+9. Click the Merge button. Accept the default commit message and merge strategy (merge
+commit). Click Merge . You should see that the feature1 branch is now merged. Click on
+Commits and verify that the work of feature 1 is now in your commit graph.
+10. In Bitbucket, navigate to the projectjfork repository. Because of the merge commit
+upstream, this repository is behind. Click the Sync now button. Accept the default
+commit message and click Sync .
+11. Because the work of the feature1 branch is merged, you can delete the feature1
+branch label in the forked remote repository. You should find the feature1 branch under
+Branches > Merged .
+12. Using the command line, delete the local projectjfork repository/directory and create a
+new clone of the same name. View the commit graph and verify that the merge commit
+from upstream is present. Now all of your repositories should be synchronized.
+Note: Deleting the local repository and recreating it using clone is a choice.
+Because we knew that all of our local work has been pushed to the remote
+repository, we can delete the local repository and start over using a clone. We are
+then assured that the remote and local repositories are synchronized.
+13. You will not use the projectj or projectjfork repositories in future labs. You can
+delete them.
